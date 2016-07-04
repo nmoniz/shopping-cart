@@ -3,31 +3,30 @@ package com.natercio;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by natercio on 29/06/16.
  */
-public class Cart {
-
-    List<Product> products;
+public class Cart extends ArrayList<Product> {
 
     public Cart() {
-        this.products = new ArrayList<Product>();
+        super();
     }
 
-    public void addProduct(Product product) {
-        this.products.add(product);
+    public Cart(Collection<? extends Product> collection) {
+        super(collection);
     }
 
     public double checkout() {
-        double total = 0;
+        BigDecimal total = BigDecimal.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-        for (Product product : products) {
-            total += product.price;
+        for (Product product : this) {
+            total = total.add(BigDecimal.valueOf(product.getValue()));
         }
 
-        return Math.round(total*100)/100d;
+        return total.doubleValue();
     }
 
 }
