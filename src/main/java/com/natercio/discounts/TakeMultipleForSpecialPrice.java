@@ -20,8 +20,8 @@ public class TakeMultipleForSpecialPrice implements Rule {
 
     private String productName;
 
-    public TakeMultipleForSpecialPrice(BigDecimal price, int requiredQuantity, String productName) {
-        this.price = price;
+    public TakeMultipleForSpecialPrice(double price, int requiredQuantity, String productName) {
+        this.price = BigDecimal.valueOf(price);
         this.requiredQuantity = requiredQuantity;
         this.productName = productName;
     }

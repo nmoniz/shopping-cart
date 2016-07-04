@@ -32,7 +32,7 @@ public class TakeMultipleWithDiscountOnCheapest implements Rule {
         candidates = getCandidates(products);
 
         for (int i = 0; i < candidates.size() / requiredQuantity; i++)
-            candidates.get(i).setModifier(0.0);
+            candidates.get(i).setModifier(discount);
     }
 
     private List<Product> getCandidates(List<Product> products) {

@@ -14,7 +14,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * Created by natercio on 03/07/16.
  */
-public class TakeMultipleWithDiscountOnCheapestTest {
+public class TakeMultipleWithDiscountOnCheapestTest extends RuleTestBase {
 
     @Test
     public void testApplyWithDistinct() throws Exception {
@@ -33,21 +33,13 @@ public class TakeMultipleWithDiscountOnCheapestTest {
     public void testApplyWithRepeated() throws Exception {
         Cart cart = new Cart(repeatedProducts());
 
-        double total = BigDecimal.valueOf(getTotal(cart) - .44 - .44).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double total = BigDecimal.valueOf(getTotal(cart) - .88).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
         Rule rule = new TakeMultipleWithDiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
 
         rule.apply(cart);
 
         assertThat(cart.checkout(), is(total));
-    }
-
-    private double getTotal(Cart cart) {
-        return BigDecimal.valueOf(cart.stream()
-                .mapToDouble(p -> p.getPrice())
-                .sum())
-                .setScale(2, BigDecimal.ROUND_HALF_UP)
-                .doubleValue();
     }
 
 }

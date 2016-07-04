@@ -1,11 +1,13 @@
 package com.natercio.discounts;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.natercio.Product;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by natercio on 30/06/16.
@@ -16,25 +18,24 @@ public class TakeMultipleWithDiscountOnLast implements Rule {
 
     private int requiredQuantity;
 
-    public TakeMultipleWithDiscountOnLast(double discount, int quantity) {
+    private String productName;
+
+    public TakeMultipleWithDiscountOnLast(double discount, int requiredQuantity, String productName) {
         this.discount = discount;
-        this.requiredQuantity = quantity;
+        this.requiredQuantity = requiredQuantity;
+        this.productName = productName;
     }
 
     @Override
     public void apply(List<Product> products) {
-        Map<String, Integer> quantities = new HashMap<String, Integer>();
+        int count = 0;
 
-        products.stream()
-                .forEach(product -> {
-                    Integer quantity = Optional.fromNullable(quantities.get(product.getName())).or(0);
+        List<Product> candidates = products.stream()
+                .filter(product -> product.getName().equals(productName))
+                .collect(Collectors.toList());
 
-                    quantity++;
-
-                    if (quantity % this.requiredQuantity == 0) product.setModifier(this.discount);
-
-                    quantities.put(product.getName(), quantity);
-                });
+        for (int i = 0; i < candidates.size() / requiredQuantity; i++)
+            candidates.get(i).setModifier(discount);
     }
 
 }
