@@ -1,23 +1,19 @@
 package com.natercio.discounts;
 
-import com.google.common.collect.ImmutableSet;
 import com.natercio.Cart;
-import com.natercio.Product;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static com.natercio.Fixtures.distinctProducts;
 import static com.natercio.Fixtures.repeatedProducts;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
- * Created by natercio on 30/06/16.
+ * Created by nater on 04/07/2016.
  */
-public class TakeMultipleWithDiscountOnLastTest extends RuleTestBase {
+public class TakeMultipleForSpecialPriceTest extends RuleTestBase {
 
     @Test
     public void testApplyWithDistinct() throws Exception {
@@ -25,7 +21,7 @@ public class TakeMultipleWithDiscountOnLastTest extends RuleTestBase {
 
         double expectedTotal = getTotal(cart);
 
-        Rule rule = new TakeMultipleWithDiscountOnLast(0.0, 3, "carrot");
+        Rule rule = new TakeMultipleForSpecialPrice(.40, 2, "onion");
 
         rule.apply(cart);
 
@@ -36,9 +32,9 @@ public class TakeMultipleWithDiscountOnLastTest extends RuleTestBase {
     public void testApplyWithRepeated() throws Exception {
         Cart cart = new Cart(repeatedProducts());
 
-        double expectedTotal = BigDecimal.valueOf(getTotal(cart) - .88).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double expectedTotal = BigDecimal.valueOf(getTotal(cart) - .16).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        Rule rule = new TakeMultipleWithDiscountOnLast(0.0, 3, "carrot");
+        Rule rule = new TakeMultipleForSpecialPrice(.40, 2, "onion");
 
         rule.apply(cart);
 

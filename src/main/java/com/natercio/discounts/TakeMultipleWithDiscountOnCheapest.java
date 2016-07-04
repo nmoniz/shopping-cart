@@ -31,20 +31,8 @@ public class TakeMultipleWithDiscountOnCheapest implements Rule {
 
         candidates = getCandidates(products);
 
-        int cheapIdx = 0;
-        int expensiveIdx = candidates.size()-1;
-        int count = 0;
-
-        while (cheapIdx < expensiveIdx) {
-            count++;
-
-            if (count % requiredQuantity == 0) {
-                candidates.get(cheapIdx).setModifier(discount);
-                cheapIdx++;
-            }
-
-            expensiveIdx--;
-        }
+        for (int i = 0; i < candidates.size() / requiredQuantity; i++)
+            candidates.get(i).setModifier(discount);
     }
 
     private List<Product> getCandidates(List<Product> products) {
