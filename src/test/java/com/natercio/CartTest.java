@@ -1,30 +1,27 @@
 package com.natercio;
 
-import com.google.common.collect.Lists;
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
+import static com.natercio.ProductFixtures.discountedProducts;
+import static com.natercio.ProductFixtures.repeatedProducts;
 
 /**
  * Created by natercio on 29/06/16.
  */
-public class CartTest extends TestCase {
+public class CartTest {
 
-    private Cart cart;
+    @Test
+    public void testCheckoutWithDiscounts() {
+        Cart cart = new Cart(discountedProducts());
 
-    public void setUp() throws Exception {
-        cart = new Cart(Lists.newArrayList(
-                new Product("onion", 0.44),
-                new Product("carrot", 0.66, 0.5),
-                new Product("carrot", 0.66, 0.5),
-                new Product("potatoe", 0.39)
-        ));
+        
     }
 
-    public void testCheckout() throws Exception {
-        assertThat(cart.checkout(), is(1.49));
+    @Test
+    public void testCheckoutWithoutDiscounts() {
+        Cart cart = new Cart(repeatedProducts());
+
+
     }
 
 }

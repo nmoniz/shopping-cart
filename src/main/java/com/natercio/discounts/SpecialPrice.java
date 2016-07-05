@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by natercio on 02/07/16.
  */
-public class TakeMultipleForSpecialPrice implements Rule {
+public class SpecialPrice implements Rule {
 
     private BigDecimal price;
 
@@ -20,7 +20,7 @@ public class TakeMultipleForSpecialPrice implements Rule {
 
     private String productName;
 
-    public TakeMultipleForSpecialPrice(double price, int requiredQuantity, String productName) {
+    public SpecialPrice(double price, int requiredQuantity, String productName) {
         this.price = BigDecimal.valueOf(price);
         this.requiredQuantity = requiredQuantity;
         this.productName = productName;

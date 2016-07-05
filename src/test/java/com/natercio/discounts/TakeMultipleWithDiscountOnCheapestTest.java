@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static com.natercio.Fixtures.distinctProducts;
-import static com.natercio.Fixtures.repeatedProducts;
+import static com.natercio.ProductFixtures.distinctProducts;
+import static com.natercio.ProductFixtures.repeatedProducts;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -22,7 +22,7 @@ public class TakeMultipleWithDiscountOnCheapestTest extends RuleTestBase {
 
         double total = getTotal(cart);
 
-        Rule rule = new TakeMultipleWithDiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
+        Rule rule = new DiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
 
         rule.apply(cart);
 
@@ -35,7 +35,7 @@ public class TakeMultipleWithDiscountOnCheapestTest extends RuleTestBase {
 
         double total = BigDecimal.valueOf(getTotal(cart) - .88).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        Rule rule = new TakeMultipleWithDiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
+        Rule rule = new DiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
 
         rule.apply(cart);
 

@@ -11,11 +11,9 @@ import java.util.function.Consumer;
 /**
  * Created by natercio on 29/06/16.
  */
-public abstract class Dispatcher extends HashSet<Rule> {
+public class Dispatcher extends HashSet<Rule> {
 
-    public void process(List<Product> cart) {
-        this.stream().forEach(rule -> {
-            rule.apply(cart);
-        });
+    public void dispatch(List<Product> products) {
+        this.stream().forEach(rule -> rule.apply(products));
     }
 }

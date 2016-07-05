@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by natercio on 30/06/16.
  */
-public class TakeMultipleWithDiscountOnLast implements Rule {
+public class DiscountOnLast implements Rule {
 
     private double discount;
 
@@ -20,7 +20,7 @@ public class TakeMultipleWithDiscountOnLast implements Rule {
 
     private String productName;
 
-    public TakeMultipleWithDiscountOnLast(double discount, int requiredQuantity, String productName) {
+    public DiscountOnLast(double discount, int requiredQuantity, String productName) {
         this.discount = discount;
         this.requiredQuantity = requiredQuantity;
         this.productName = productName;

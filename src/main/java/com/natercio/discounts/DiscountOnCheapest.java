@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by natercio on 02/07/16.
  */
-public class TakeMultipleWithDiscountOnCheapest implements Rule {
+public class DiscountOnCheapest implements Rule {
 
     Set<String> candidateProductsName;
 
@@ -19,7 +19,7 @@ public class TakeMultipleWithDiscountOnCheapest implements Rule {
 
     private int requiredQuantity;
 
-    public TakeMultipleWithDiscountOnCheapest(Set<String> candidateProducts, double discount, int requiredQuantity) {
+    public DiscountOnCheapest(Set<String> candidateProducts, double discount, int requiredQuantity) {
         this.candidateProductsName = candidateProducts;
         this.discount = discount;
         this.requiredQuantity = requiredQuantity;
