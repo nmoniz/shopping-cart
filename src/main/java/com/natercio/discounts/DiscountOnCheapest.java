@@ -1,6 +1,5 @@
 package com.natercio.discounts;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.natercio.Product;
 
@@ -8,10 +7,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by natercio on 02/07/16.
- */
-public class DiscountOnCheapest implements Rule {
+public class DiscountOnCheapest extends GroupingRule {
 
     Set<String> candidateProductsName;
 
@@ -26,17 +22,18 @@ public class DiscountOnCheapest implements Rule {
     }
 
     @Override
-    public void apply(List<Product> products) {
-        List<Product> candidates = Lists.newArrayList();
+    protected Product transform(Product product) {
+        double modDiff = product.getModifier() - 1.0;
 
-        candidates = getCandidates(products);
-
-        for (int i = 0; i < candidates.size() / requiredQuantity; i++)
-            candidates.get(i).setModifier(discount);
+        return new Product(
+                product.getName(),
+                product.getPrice(),
+                discount + modDiff);
     }
 
-    private List<Product> getCandidates(List<Product> products) {
-        return products.stream()
+    @Override
+    protected List<Product> candidates(List<Product> products) {
+        List<Product> temp = products.stream()
                 .filter(product -> candidateProductsName.contains(product.getName()))
                 .sorted((p1, p2) -> {
                     double difference = p1.getPrice() - p2.getPrice();
@@ -45,6 +42,10 @@ public class DiscountOnCheapest implements Rule {
 
                     return BigDecimal.valueOf(difference).divide(BigDecimal.valueOf(Math.abs(difference))).intValue();
                 })
+                .collect(Collectors.toList());
+
+        return temp.stream()
+                .limit(temp.size() / requiredQuantity)
                 .collect(Collectors.toList());
     }
 

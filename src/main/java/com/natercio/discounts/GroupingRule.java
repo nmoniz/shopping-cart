@@ -14,6 +14,7 @@ public abstract class GroupingRule implements Rule {
         return products.stream()
                 .map(product -> {
                     if (candidates.contains(product)) {
+                        candidates.remove(product);
                         return transform(product);
                     } else {
                         return product.clone();
