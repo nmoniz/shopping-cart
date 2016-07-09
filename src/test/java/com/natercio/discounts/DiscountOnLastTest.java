@@ -1,42 +1,45 @@
 package com.natercio.discounts;
 
 import com.natercio.Cart;
+import com.natercio.Product;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static com.natercio.ProductFixtures.distinctProducts;
 import static com.natercio.ProductFixtures.repeatedProducts;
+import static com.natercio.discounts.RuleTestUtils.getTotalFullPrice;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
  * Created by natercio on 30/06/16.
  */
-public class DiscountOnLastTest extends RuleTestBase {
+public class DiscountOnLastTest {
 
     @Test
-    public void testApplyWithDistinct() throws Exception {
-        Cart cart = new Cart(distinctProducts());
+    public void testApplyShouldReturnFullPrice() throws Exception {
+        List<Product> products = distinctProducts();
 
-        double expectedTotal = getTotal(cart);
+        double expectedTotal = getTotalFullPrice(products);
 
         Rule rule = new DiscountOnLast(0.0, 3, "carrot");
 
-        rule.apply(cart);
+        Cart cart = new Cart(rule.apply(products));
 
         assertThat(cart.checkout(), is(expectedTotal));
     }
 
     @Test
-    public void testApplyWithRepeated() throws Exception {
-        Cart cart = new Cart(repeatedProducts());
+    public void testApplyShouldReturnDiscounts() throws Exception {
+        List<Product> products = repeatedProducts();
 
-        double expectedTotal = BigDecimal.valueOf(getTotal(cart) - .88).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double expectedTotal = BigDecimal.valueOf(getTotalFullPrice(products) - .25).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        Rule rule = new DiscountOnLast(0.0, 3, "carrot");
+        Rule rule = new DiscountOnLast(0.0, 3, "onion");
 
-        rule.apply(cart);
+        Cart cart = new Cart(rule.apply(products));
 
         assertThat(cart.checkout(), is(expectedTotal));
     }

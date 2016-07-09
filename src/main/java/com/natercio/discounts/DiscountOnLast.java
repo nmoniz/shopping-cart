@@ -1,18 +1,15 @@
 package com.natercio.discounts;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Strings;
 import com.natercio.Product;
 
-import java.util.HashMap;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Created by natercio on 30/06/16.
  */
-public class DiscountOnLast implements Rule {
+public class DiscountOnLast extends GroupingRule {
 
     private double discount;
 
@@ -27,15 +24,24 @@ public class DiscountOnLast implements Rule {
     }
 
     @Override
-    public void apply(List<Product> products) {
-        int count = 0;
+    protected Product transform(Product product) {
+        double modDiff = product.getModifier() - 1.0;
 
-        List<Product> candidates = products.stream()
+        return new Product(
+                product.getName(),
+                product.getPrice(),
+                discount + modDiff);
+    }
+
+    @Override
+    protected List<Product> candidates(List<Product> products) {
+        List<Product> temp = products.stream()
                 .filter(product -> product.getName().equals(productName))
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < candidates.size() / requiredQuantity; i++)
-            candidates.get(i).setModifier(discount);
+        return temp.stream()
+                .limit(temp.size() / requiredQuantity)
+                .collect(Collectors.toList());
     }
 
 }
