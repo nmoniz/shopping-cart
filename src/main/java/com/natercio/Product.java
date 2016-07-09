@@ -2,9 +2,8 @@ package com.natercio;
 
 import java.math.BigDecimal;
 
-/**
- * Created by natercio on 29/06/16.
- */
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class Product {
 
     private String name;
@@ -14,13 +13,18 @@ public class Product {
     private double modifier;
 
     public Product(String name, double price) {
-        this.name = name;
-        this.price = BigDecimal.valueOf(price).setScale(2, BigDecimal.ROUND_HALF_UP);
-        this.modifier = 1.0;
+        init(name, price, 1.0);
     }
 
 
     public Product(String name, double price, double modifier) {
+        init(name, price, modifier);
+    }
+
+    private void init(String name, double price, double modifier) {
+        checkArgument(price >= 0.0);
+        checkArgument(modifier >= 0.0);
+
         this.name = name;
         this.price = BigDecimal.valueOf(price).setScale(2, BigDecimal.ROUND_HALF_UP);
         this.modifier = modifier;
@@ -39,6 +43,8 @@ public class Product {
     }
 
     public void setPrice(double price) {
+        checkArgument(price >= 0.0);
+
         this.price = BigDecimal.valueOf(price);
     }
 
@@ -47,6 +53,8 @@ public class Product {
     }
 
     public void setModifier(double modifier) {
+        checkArgument(modifier >= 0.0);
+
         this.modifier = modifier;
     }
 
@@ -66,4 +74,27 @@ public class Product {
         return result;
     }
 
+    @Override
+    public Product clone() {
+        return new Product(
+                this.getName(),
+                this.getPrice(),
+                this.getModifier()
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj)) return true;
+
+        if (obj instanceof Product) {
+            Product p = (Product) obj;
+
+            return this.getName().equals(this.name) &&
+                    this.getPrice() == p.getPrice() &&
+                    this.getModifier() == p.getModifier();
+        }
+
+        return false;
+    }
 }
