@@ -20,20 +20,20 @@ import static org.hamcrest.core.Is.is;
 public class DiscountOnCheapestTest {
 
     @Test
-    public void testApplyWithDistinct() throws Exception {
-        Cart cart = new Cart(distinctProducts());
+    public void testApplyShouldReturnFullPrice() throws Exception {
+        List<Product> products = distinctProducts();
 
-        double total = getTotalFullPrice(cart);
+        double total = getTotalFullPrice(products);
 
         Rule rule = new DiscountOnCheapest(ImmutableSet.of("onion", "carrot"), 0.0, 3);
 
-        rule.apply(cart);
+        Cart cart = new Cart(rule.apply(products));
 
         assertThat(cart.checkout(), is(total));
     }
 
     @Test
-    public void testApplyWithRepeated() throws Exception {
+    public void testApplyShouldReturnDicounts() throws Exception {
         List<Product> products = repeatedProducts();
 
         double totalWithDiscount = BigDecimal.valueOf(getTotalFullPrice(products) - .5).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
