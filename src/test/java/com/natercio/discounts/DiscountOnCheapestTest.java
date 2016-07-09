@@ -20,7 +20,7 @@ import static org.hamcrest.core.Is.is;
 public class DiscountOnCheapestTest {
 
     @Test
-    public void testApplyShouldReturnFullPrice() throws Exception {
+    public void testApplyShouldReturnFullPrice() {
         List<Product> products = distinctProducts();
 
         double total = getTotalFullPrice(products);
@@ -33,7 +33,7 @@ public class DiscountOnCheapestTest {
     }
 
     @Test
-    public void testApplyShouldReturnDicounts() throws Exception {
+    public void testApplyShouldReturnDicounts() {
         List<Product> products = repeatedProducts();
 
         double totalWithDiscount = BigDecimal.valueOf(getTotalFullPrice(products) - .5).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
