@@ -33,7 +33,15 @@ public class DiscountOnCheapest extends GroupingRule {
 
     @Override
     protected List<Product> candidates(List<Product> products) {
-        List<Product> temp = products.stream()
+        final List<Product> temp = getAllCandidatesSorted(products);
+
+        return temp.stream()
+                .limit(temp.size() / requiredQuantity)
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> getAllCandidatesSorted(List<Product> products) {
+        return products.stream()
                 .filter(product -> candidateProductsName.contains(product.getName()))
                 .sorted((p1, p2) -> {
                     double difference = p1.getPrice() - p2.getPrice();
@@ -42,10 +50,6 @@ public class DiscountOnCheapest extends GroupingRule {
 
                     return BigDecimal.valueOf(difference).divide(BigDecimal.valueOf(Math.abs(difference))).intValue();
                 })
-                .collect(Collectors.toList());
-
-        return temp.stream()
-                .limit(temp.size() / requiredQuantity)
                 .collect(Collectors.toList());
     }
 

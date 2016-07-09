@@ -1,12 +1,10 @@
 package com.natercio.discounts;
 
-import com.google.common.collect.Lists;
 import com.natercio.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SpecialPrice extends GroupingRule {
 
@@ -32,12 +30,16 @@ public class SpecialPrice extends GroupingRule {
 
     @Override
     protected List<Product> candidates(List<Product> products) {
-        List<Product> temp = products.stream()
-                .filter(product -> product.getName().equals(productName))
-                .collect(Collectors.toList());
+        final List<Product> temp = getAllCandidates(products);
 
         return temp.stream()
                 .limit(temp.size() - (temp.size() % requiredQuantity))
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> getAllCandidates(List<Product> products) {
+        return products.stream()
+                .filter(product -> product.getName().equals(productName))
                 .collect(Collectors.toList());
     }
 }

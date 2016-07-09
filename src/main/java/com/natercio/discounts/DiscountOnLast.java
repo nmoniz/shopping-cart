@@ -35,12 +35,16 @@ public class DiscountOnLast extends GroupingRule {
 
     @Override
     protected List<Product> candidates(List<Product> products) {
-        List<Product> temp = products.stream()
-                .filter(product -> product.getName().equals(productName))
-                .collect(Collectors.toList());
+        final List<Product> temp = getCandidates(products);
 
         return temp.stream()
                 .limit(temp.size() / requiredQuantity)
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> getCandidates(List<Product> products) {
+        return products.stream()
+                .filter(product -> product.getName().equals(productName))
                 .collect(Collectors.toList());
     }
 
