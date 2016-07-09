@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by nater on 04/07/2016.
  */
-public class ProductFixtures {
+public abstract class ProductFixtures {
 
     public static String[] PRODUCT_NAMES = {"onion", "carrot", "potato", "melon"};
 
