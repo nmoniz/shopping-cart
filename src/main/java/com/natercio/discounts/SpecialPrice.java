@@ -1,18 +1,14 @@
 package com.natercio.discounts;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.natercio.Product;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-/**
- * Created by natercio on 02/07/16.
- */
-public class SpecialPrice implements Rule {
+public class SpecialPrice extends GroupingRule {
 
     private BigDecimal price;
 
@@ -27,20 +23,21 @@ public class SpecialPrice implements Rule {
     }
 
     @Override
-    public void apply(List<Product> products) {
-        List<Product> repeated = Lists.newArrayList();
+    protected Product transform(Product product) {
+        return new Product(
+                product.getName(),
+                price.doubleValue(),
+                product.getModifier());
+    }
 
-        products.stream()
+    @Override
+    protected List<Product> candidates(List<Product> products) {
+        List<Product> temp = products.stream()
                 .filter(product -> product.getName().equals(productName))
-                .forEach(product -> {
-                    repeated.add(product);
+                .collect(Collectors.toList());
 
-                    if (repeated.size() % this.requiredQuantity == 0) {
-                        repeated.stream().forEach(repProduct -> {
-                            repProduct.setPrice(price.doubleValue());
-                        });
-                        repeated.clear();
-                    }
-                });
+        return temp.stream()
+                .limit(temp.size() - (temp.size() % requiredQuantity))
+                .collect(Collectors.toList());
     }
 }
