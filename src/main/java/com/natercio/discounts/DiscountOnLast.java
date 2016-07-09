@@ -25,7 +25,7 @@ public class DiscountOnLast extends GroupingRule {
 
     @Override
     protected Product transform(Product product) {
-        double modDiff = product.getModifier() - 1.0;
+        final double modDiff = product.getModifier() - 1.0;
 
         return new Product(
                 product.getName(),
